@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators  } from '@angular/forms';
+import { AuthService } from '../shared/auth.service';
+import { SignupRequestPayload } from './SignupRequestPayload ';
+
 
 @Component({
   selector: 'app-sing-up',
@@ -7,17 +10,35 @@ import { FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./sing-up.component.css']
 })
 export class SingUpComponent implements OnInit {
-  
-  signupForm: FormGroup | undefined;
+  signupRequestPayload: SignupRequestPayload;
+  signupForm: FormGroup;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private authService: AuthService) { 
+    this.signupRequestPayload = {
+      username: '',
+      email: '',
+      password: ''
+    };
     this.signupForm = new FormGroup({
-      username: new FormControl(null),
-      email: new FormControl(null),
-      password: new FormControl(null)
+      username: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', Validators.required)
     });
   }
 
+  ngOnInit() {
+
+  }
+
+  signup() {
+    this.signupRequestPayload.username = this.signupForm.get('username')?.value;
+    this.signupRequestPayload.email = this.signupForm.get('email')?.value;
+    this.signupRequestPayload.password = this.signupForm.get('password')?.value;
+    
+    this.authService.signup(this.signupRequestPayload).subscribe(() => {
+      console.log('Signup Successful');
+    }, () => {
+      console.log('Signup Failed');
+    });
+  }
 }
