@@ -23,6 +23,7 @@
     "bootstrap": "^4.6.0",
     "ngx-toastr": "^13.2.0",
     "ngx-webstorage": "^7.0.1",
+    "package": "^1.0.1",
     "rxjs": "~6.6.0",
     "save": "^2.4.0",
     "tslib": "^2.0.0",
